@@ -1,9 +1,6 @@
 package io.elastest.epm.api.exception;
 
-import io.elastest.epm.exception.AllocationException;
-import io.elastest.epm.exception.BadRequestException;
-import io.elastest.epm.exception.NotFoundException;
-import io.elastest.epm.exception.TerminationException;
+import io.elastest.epm.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -49,6 +46,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     headers.setContentType(MediaType.APPLICATION_JSON);
 
     return handleExceptionInternal(e, exc, headers, HttpStatus.NOT_FOUND, request);
+  }
+
+  @ExceptionHandler({UnauthorizedException.class})
+  @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+  protected ResponseEntity<Object> handUnauthorizedException(Exception e, WebRequest request) {
+
+    log.error("Exception was thrown -> Return message: " + e.getMessage(), e);
+
+    ApiException exc = new ApiException(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+
+    return handleExceptionInternal(e, exc, headers, HttpStatus.UNAUTHORIZED, request);
   }
 
   @ExceptionHandler({Exception.class})
