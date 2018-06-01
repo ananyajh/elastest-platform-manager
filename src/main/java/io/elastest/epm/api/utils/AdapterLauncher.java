@@ -6,9 +6,8 @@ import io.elastest.epm.model.KeyValuePair;
 import io.elastest.epm.model.PoP;
 import io.elastest.epm.model.Worker;
 import io.elastest.epm.properties.ElastestProperties;
-import java.io.*;
-
 import io.elastest.epm.repository.PoPRepository;
+import java.io.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

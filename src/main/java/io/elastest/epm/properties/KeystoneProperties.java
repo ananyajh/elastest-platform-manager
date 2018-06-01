@@ -7,48 +7,87 @@ import org.springframework.stereotype.Service;
 @ConfigurationProperties(prefix = "keystone")
 public class KeystoneProperties {
 
-    private String endpoint;
-    private String username;
-    private String password;
-    private String domain;
+  private String endpoint;
+  private String username;
+  private String password;
+  private String domain;
 
-    public String getEndpoint() {
-        return endpoint;
-    }
+  private String port;
+  private String version;
+  private boolean enabled;
 
-    public String getUsername() {
-        return username;
-    }
+  public String getPort() {
+    return port;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public void setPort(String port) {
+    this.port = port;
+  }
 
-    public String getDomain() {
-        return domain;
-    }
+  public String getVersion() {
+    return version;
+  }
 
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public String getEndpoint() {
+    return endpoint;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    @Override
-    public String toString() {
-        return "Endpoint: " + endpoint +
-                "\n Username: " + username +
-                "\n Password: " + password +
-                "\n Domain: " + domain;
-    }
+  public String getDomain() {
+    return domain;
+  }
+
+  public void setEndpoint(String endpoint) {
+    this.endpoint = endpoint;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public void setDomain(String domain) {
+    this.domain = domain;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  @Override
+  public String toString() {
+
+    return "\n Enabled: "
+        + enabled
+        + "\n Endpoint: "
+        + endpoint
+        + "\n Username: "
+        + username
+        + "\n Password: "
+        + password
+        + "\n Domain: "
+        + domain
+        + "\n Port: "
+        + port
+        + "\n Version: "
+        + version;
+  }
 }

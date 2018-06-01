@@ -10,8 +10,6 @@ import com.github.dockerjava.core.DockerClientConfig;
 import io.elastest.epm.core.ResourceGroupManagement;
 import io.elastest.epm.pop.adapter.docker.DockerAdapter;
 import io.elastest.epm.properties.DockerProperties;
-import io.elastest.epm.repository.NetworkRepository;
-import io.elastest.epm.repository.PoPRepository;
 import io.elastest.epm.repository.VduRepository;
 import io.elastest.unit.core.CoreTest;
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ public class AdapterTest {
   private final Logger log = LoggerFactory.getLogger(CoreTest.class);
 
   @Autowired private ConfigurableApplicationContext context;
-    VduRepository vduRepository;
+  VduRepository vduRepository;
 
   //    @Mock private ListImagesCmd listImagesCmd;
 
@@ -113,10 +111,8 @@ public class AdapterTest {
     return dockerProperties;
   }
 
-
-    @Bean
-    ResourceGroupManagement poPManagement() {
-        return new ResourceGroupManagement();
-    }
-
+  @Bean
+  ResourceGroupManagement poPManagement() {
+    return new ResourceGroupManagement();
+  }
 }

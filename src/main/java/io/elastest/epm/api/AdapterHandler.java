@@ -15,38 +15,38 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class AdapterHandler extends AdapterHandlerGrpc.AdapterHandlerImplBase {
 
-    @Autowired
-    private AdapterRepository adapterRepository;
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+  @Autowired private AdapterRepository adapterRepository;
+  private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Override
-    public void registerAdapter(AdapterProto request, StreamObserver<ResourceIdentifier> responseObserver) {
+  @Override
+  public void registerAdapter(
+      AdapterProto request, StreamObserver<ResourceIdentifier> responseObserver) {
 
-        Adapter adapter = new Adapter();
-        adapter.setEndpoint(request.getEndpoint());
-        adapter.setType(request.getType());
-        adapterRepository.save(adapter);
+    Adapter adapter = new Adapter();
+    adapter.setEndpoint(request.getEndpoint());
+    adapter.setType(request.getType());
+    adapterRepository.save(adapter);
 
-        log.debug(String.valueOf(adapter));
+    log.debug(String.valueOf(adapter));
 
-        ResourceIdentifier resourceIdentifier = ResourceIdentifier.newBuilder().setResourceId(adapter.getId()).build();
-        responseObserver.onNext(resourceIdentifier);
-        responseObserver.onCompleted();
+    ResourceIdentifier resourceIdentifier =
+        ResourceIdentifier.newBuilder().setResourceId(adapter.getId()).build();
+    responseObserver.onNext(resourceIdentifier);
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void deleteAdapter(ResourceIdentifier request, StreamObserver<Empty> responseObserver) {
+
+    if (adapterRepository.findOne(request.getResourceId()) != null) {
+      log.debug("Removing adapter: " + request.getResourceId());
+      adapterRepository.delete(request.getResourceId());
+    } else {
+      log.debug("Adapter with id: " + request.getResourceId() + " not found.");
     }
 
-    @Override
-    public void deleteAdapter(ResourceIdentifier request, StreamObserver<Empty> responseObserver) {
-
-        if(adapterRepository.findOne(request.getResourceId()) != null){
-            log.debug("Removing adapter: " + request.getResourceId());
-            adapterRepository.delete(request.getResourceId());
-        }
-        else{
-            log.debug("Adapter with id: " + request.getResourceId() + " not found.");
-        }
-
-        Empty reply = Empty.newBuilder().build();
-        responseObserver.onNext(reply);
-        responseObserver.onCompleted();
-    }
+    Empty reply = Empty.newBuilder().build();
+    responseObserver.onNext(reply);
+    responseObserver.onCompleted();
+  }
 }

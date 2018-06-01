@@ -2,9 +2,7 @@ package io.elastest.unit.pop.adapter;
 
 import com.github.dockerjava.api.DockerClient;
 import io.elastest.epm.core.ResourceGroupManagement;
-import io.elastest.epm.core.RuntimeManagement;
 import io.elastest.epm.model.PoP;
-import io.elastest.epm.model.ResourceGroup;
 import io.elastest.epm.model.VDU;
 import io.elastest.epm.pop.adapter.docker.DockerAdapter;
 import io.elastest.epm.pop.messages.compute.AllocateComputeRequest;
@@ -53,17 +51,14 @@ public class DockerAdapterTest {
   @Qualifier("test_dockerAdapter")
   DockerAdapter dockerAdapter;
 
-    @Autowired
-    PoPRepository poPRepository;
+  @Autowired PoPRepository poPRepository;
 
-    @Autowired
-    NetworkRepository networkRepository;
+  @Autowired NetworkRepository networkRepository;
 
-    @Autowired
-    VduRepository vduRepository;
+  @Autowired VduRepository vduRepository;
   //  @Autowired ListImagesCmd listImagesCmd;
 
-    @Autowired ResourceGroupManagement resourceGroupManagement;
+  @Autowired ResourceGroupManagement resourceGroupManagement;
 
   @Autowired VDU vdu;
 
@@ -72,9 +67,9 @@ public class DockerAdapterTest {
   @Before
   public void init() {
     MockitoAnnotations.initMocks(this);
-      ReflectionTestUtils.setField(dockerAdapter, "resourceGroupManagement", resourceGroupManagement);
+    ReflectionTestUtils.setField(dockerAdapter, "resourceGroupManagement", resourceGroupManagement);
 
-      pop.setInterfaceEndpoint("tcp://" + pop.getInterfaceEndpoint());
+    pop.setInterfaceEndpoint("tcp://" + pop.getInterfaceEndpoint());
     log.info("Starting DockerAdapterTest");
   }
 

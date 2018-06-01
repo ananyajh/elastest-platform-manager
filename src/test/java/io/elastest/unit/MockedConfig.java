@@ -41,9 +41,9 @@ public class MockedConfig {
 
   @Bean
   Adapter adapter() {
-      Adapter adapter = new Adapter();
-      adapter.setEndpoint("mocked_adapter_url");
-      return adapter;
+    Adapter adapter = new Adapter();
+    adapter.setEndpoint("mocked_adapter_url");
+    return adapter;
   }
 
   @Bean

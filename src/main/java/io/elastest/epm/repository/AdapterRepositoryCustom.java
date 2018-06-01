@@ -5,5 +5,5 @@ import io.elastest.epm.model.Adapter;
 
 public interface AdapterRepositoryCustom {
 
-    Adapter findAdapterForTypeAndIp(String type, String ip) throws NotFoundException;
+  Adapter findAdapterForTypeAndIp(String type, String ip) throws NotFoundException;
 }

@@ -82,13 +82,13 @@ public class PackagesApiController implements PackagesApi {
       e.printStackTrace();
       return new ResponseEntity<ResourceGroup>(HttpStatus.NOT_FOUND);
     } catch (AllocationException e) {
-        e.printStackTrace();
-        return new ResponseEntity<ResourceGroup>(HttpStatus.BAD_REQUEST);
+      e.printStackTrace();
+      return new ResponseEntity<ResourceGroup>(HttpStatus.BAD_REQUEST);
     } catch (AdapterException e) {
-        e.printStackTrace();
-        return new ResponseEntity<ResourceGroup>(HttpStatus.BAD_REQUEST);
+      e.printStackTrace();
+      return new ResponseEntity<ResourceGroup>(HttpStatus.BAD_REQUEST);
     } catch (BadRequestException e) {
-        return new ResponseEntity<ResourceGroup>(HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<ResourceGroup>(HttpStatus.BAD_REQUEST);
     }
   }
 }

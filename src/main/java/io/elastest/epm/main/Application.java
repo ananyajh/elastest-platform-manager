@@ -18,26 +18,26 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaRepositories(value = "io.elastest.epm.repository")
 public class Application implements CommandLineRunner {
 
-    @Autowired private AdapterManagement adapterManagement;
+  @Autowired private AdapterManagement adapterManagement;
+
+  @Override
+  public void run(String... arg0) throws Exception {
+    if (arg0.length > 0 && arg0[0].equals("exitcode")) {
+      throw new ExitException();
+    }
+    adapterManagement.init();
+  }
+
+  public static void main(String[] args) throws Exception {
+    new SpringApplication(Application.class).run(args);
+  }
+
+  class ExitException extends RuntimeException implements ExitCodeGenerator {
+    private static final long serialVersionUID = 1L;
 
     @Override
-    public void run(String... arg0) throws Exception {
-        if (arg0.length > 0 && arg0[0].equals("exitcode")) {
-        throw new ExitException();
-        }
-        adapterManagement.init();
-    }
-
-    public static void main(String[] args) throws Exception {
-        new SpringApplication(Application.class).run(args);
-    }
-
-    class ExitException extends RuntimeException implements ExitCodeGenerator {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public int getExitCode() {
+    public int getExitCode() {
       return 10;
     }
-    }
+  }
 }

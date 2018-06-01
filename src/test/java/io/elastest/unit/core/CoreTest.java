@@ -94,10 +94,10 @@ public class CoreTest {
     return new NetworkManagement();
   }
 
-    @Bean
-    ResourceGroupManagement resourceGroupManagement() {
-        return new ResourceGroupManagement();
-    }
+  @Bean
+  ResourceGroupManagement resourceGroupManagement() {
+    return new ResourceGroupManagement();
+  }
 
   @Bean
   List<Network> networks() {
@@ -164,18 +164,17 @@ public class CoreTest {
   }
 
   @Bean
-    AdapterRepository adapterRepository() {
-      AdapterRepository adapterRepository = mock(AdapterRepository.class);
-      List<Adapter> adapters = new ArrayList<>();
-      adapters.add(adapter);
+  AdapterRepository adapterRepository() {
+    AdapterRepository adapterRepository = mock(AdapterRepository.class);
+    List<Adapter> adapters = new ArrayList<>();
+    adapters.add(adapter);
 
+    when(adapterRepository.save(adapter)).thenReturn(adapter);
+    when(adapterRepository.findAll()).thenReturn(adapters);
+    when(adapterRepository.findOne(pop.getId())).thenReturn(adapter);
+    doNothing().when(adapterRepository).delete(pop.getId());
 
-      when(adapterRepository.save(adapter)).thenReturn(adapter);
-      when(adapterRepository.findAll()).thenReturn(adapters);
-      when(adapterRepository.findOne(pop.getId())).thenReturn(adapter);
-      doNothing().when(adapterRepository).delete(pop.getId());
-
-      return adapterRepository;
+    return adapterRepository;
   }
 
   @Bean
