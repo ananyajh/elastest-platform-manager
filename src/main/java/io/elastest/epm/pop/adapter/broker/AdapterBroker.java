@@ -7,6 +7,7 @@ import io.elastest.epm.pop.adapter.ansible.AnsibleAdapter;
 import io.elastest.epm.pop.adapter.compose.DockerComposeAdapter;
 import io.elastest.epm.pop.adapter.docker.DockerAdapter;
 import io.elastest.epm.pop.adapter.docker.DockerAdapterProto;
+import io.elastest.epm.pop.adapter.virtualbox.VirtualBoxAdapter;
 import io.elastest.epm.pop.interfaces.AdapterBrokerInterface;
 import io.elastest.epm.pop.interfaces.PackageManagementInterface;
 import io.elastest.epm.pop.interfaces.RuntimeManagmentInterface;
@@ -27,6 +28,8 @@ public class AdapterBroker implements AdapterBrokerInterface {
   private Logger log = LoggerFactory.getLogger(this.getClass());
 
   @Autowired DockerComposeAdapter dockerComposeAdapter;
+  @Autowired
+    VirtualBoxAdapter virtualBoxAdapter;
   @Autowired AnsibleAdapter ansibleAdapter;
   @Autowired DockerAdapterProto dockerAdapter;
 
@@ -43,17 +46,17 @@ public class AdapterBroker implements AdapterBrokerInterface {
     }
 
     if (typeSpecified) {
-      switch (type) {
-        case "docker-compose":
-          return dockerComposeAdapter;
-
-        case "ansible":
-          return ansibleAdapter;
-        case "docker":
-          return dockerAdapter;
-
-        default:
-          return new DockerAdapter();
+        switch (type) {
+            case "docker-compose":
+                return dockerComposeAdapter;
+            case "virtualbox":
+                return virtualBoxAdapter;
+            case "ansible":
+                return ansibleAdapter;
+            case "docker":
+                return dockerAdapter;
+            default:
+                return new DockerAdapter();
       }
     } else return new DockerAdapter();
   }
@@ -89,15 +92,17 @@ public class AdapterBroker implements AdapterBrokerInterface {
   }
 
   private PackageManagementInterface findByType(String type) {
-    switch (type) {
-      case "docker-compose":
-        return dockerComposeAdapter;
-      case "ansible":
-        return ansibleAdapter;
-      case "docker":
-        return dockerAdapter;
-      default:
-        return null;
+      switch (type) {
+          case "docker-compose":
+              return dockerComposeAdapter;
+          case "virtualbox":
+              return virtualBoxAdapter;
+          case "ansible":
+              return ansibleAdapter;
+          case "docker":
+              return dockerAdapter;
+          default:
+              return null;
     }
   }
 }
