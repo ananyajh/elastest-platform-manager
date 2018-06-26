@@ -1,5 +1,78 @@
-version: '3'
+version: '2.1'
 services:
+    rabbitmq:
+        container_name: rabbitmq-server
+        build: services/rabbitmq
+        image: services/rabbitmq
+        env_file:
+            - services/env
+        expose:
+            - 15672
+            - 5672
+        ports:
+            - 15672:15672
+            - 5672:5672
+        networks:
+            - elastest
+    kibana:
+        container_name: kibana-server
+        build: services/kibana/
+        image: services/kibana
+        env_file:
+          - services/env
+        ports:
+          - 5601:5601
+        networks:
+          - elastest
+        links:
+          - elasticsearch
+    elasticsearch:
+        container_name: elasticsearch-server
+        build: services/elasticsearch
+        image: services/elasticsearch
+        env_file:
+            - services/env
+        expose:
+            - 9200
+            - 9300
+        ports:
+            - 9200:9200
+            - 9300:9300
+        networks:
+            - elastest
+        links:
+            - rabbitmq
+    logstash:
+        container_name: logstash-server
+        build: services/logstash
+        image: services/logstash
+        env_file:
+            - services/env
+        expose:
+            - 5044
+            - 5000
+            - 9600
+        ports:
+            - 9600:9600
+            - 5044:5044
+            - 5000:5000
+        networks:
+            - elastest
+        links:
+            - elasticsearch
+            - rabbitmq
+    dockbeat:
+        container_name: dockbeat-server
+        build: services/dockbeat
+        image: services/dockbeat
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        env_file:
+            - services/env
+        networks:
+            - elastest
+        links:
+            - elasticsearch
     elastest-platform-manager:
         container_name: elastest-epm
         build: ./docker/elastest-platform-manager
@@ -20,7 +93,10 @@ services:
             - 8180:8180
             - 50050:50050
         networks:
-            - elastest_elastest
+            - elastest
+        links:
+            - logstash
+            - dockbeat
     epm-adapter-docker-compose:
         container_name: elastest-epm-adapter-docker-compose
         image: elastest/epm-adapter-docker-compose
@@ -32,7 +108,8 @@ services:
         ports:
             - 50051:50051
         networks:
-            - build-image-network
+            - elastest
+
     aaa:
         depends_on:
           - mysql
@@ -43,7 +120,7 @@ services:
           - mysql
         ports:
           - "35357:35357"
-          - "5000:5000"
+         # - "5000:5000"
         environment:
           MYSQL_HOST: mysql
           MYSQL_ROOT_PASSWORD: shush  # XXX there's an issue here: if set connections get reset
@@ -52,8 +129,8 @@ services:
           ADMIN_USER_NAME: admin
           ADMIN_PASSWORD: admin
         networks:
-          - elastest_elastest
-                
+          - elastest
+
 
     mysql:
         image: mysql:5.7
@@ -69,11 +146,7 @@ services:
           timeout: 10s
           retries: 5
         networks:
-          - elastest_elastest
+          - elastest
 networks:
-    build-image-network:
+    elastest:
         driver: bridge
-    elastest_elastest:
-        driver: bridge
-
-

@@ -38,9 +38,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                     + keystoneProperties.getVersion())
             .credentials(keystoneProperties.getUsername(), keystoneProperties.getPassword(), ident)
             .authenticate();
-
+    log.info("Authenticated with keystone");
     String authToken = request.getHeader("Authorization");
-    log.info("Token is " + authToken);
+    if (authToken != null && authToken.startsWith("Bearer")) {
+      log.info("Oath2 detected");
+      authToken = authToken.substring(7, authToken.length());
+    }
     try {
       if (authToken != null && os.identity().tokens().check(authToken).isSuccess()) {
         log.info("Token is valid. Grant request");
